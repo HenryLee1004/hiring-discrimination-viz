@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Racial Discrimination Module</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+    }
+
+    #tooltip {
+      position: absolute;
+      padding: 4px 8px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 12px;
+      pointer-events: none;
+      display: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>How do different ethnicities play a role in job hunt in early 2000s?</h1>
+
+
+
+
+    <p>
+      In 2001, researchers from UChicago created fake resumes and manipulated the person’s names
+      to be African-American sounding vs Caucasion-sounding (based on name frequency data of new
+      borns from 1974~1979) in order to evaluate how racial bias play a role in the hiring process.
+      They also manipulated other resume details. Then they sent these resumes to real employers.
+    </p>
+
+    <p>
+      This bar graph shows how often different resumes got a callback for a job interview.
+    </p>
+  </header>
+
+  <!-- need a tooltip when hover -->
+  <div id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <main>
+    <!-- the container that holds each panel -->
+    <div style="display: flex; gap: 5px;">
+
+      <!-- left panel for resume details -->
+      <aside aria-label="Resume filters" style="width: 220px;">
+        <h2>Resume Filters</h2>
+
+        <!-- sliders for college education, cs skills, honors/volunteers-->
+        <div class="tri-slider" style="margin-bottom:5px;">
+          <label for="college-slider">College Educated:</label>
+          <input id="college-slider" name="college-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="computer-slider">Computer Skills:</label>
+          <input id="computer-slider" name="computer-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="honors-slider">Received Honors:</label>
+          <input id="honors-slider" name="honors-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="volunteer-slider">Volunteering Experience:</label>
+          <input id="volunteer-slider" name="volunteer-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+
+
+
+        <!--check boxes and range input for number of jobs and expernces-->
+
+        <div style="margin-bottom:8px;">
+          <label>
+            <input type="checkbox" id="jobs-enable">
+            Filter by # of previous jobs
+          </label>
+          <br>
+          <label for="jobs-min">Min:</label>
+          <input type="number" id="jobs-min" name="jobs-min" value="0" style="width:50px;">
+          <label for="jobs-max">Max:</label>
+          <input type="number" id="jobs-max" name="jobs-max" value="7" style="width:50px;">
+        </div>
+
+        <div>
+          <label>
+            <input type="checkbox" id="exp-enable">
+            Filter by # of years of experience
+          </label>
+          <br>
+          <label for="exp-min">Min:</label>
+          <input type="number" id="exp-min" name="exp-min" value="0" style="width:50px;">
+          <label for="exp-max">Max:</label>
+          <input type="number" id="exp-max" name="exp-max" value="19" style="width:50px;">
+        </div>
+      </aside>
+
+      <!-- panel for employer filters -->
+      <aside aria-label="Employer filters" style="width: 210px;">
+        <h2>Employer Filters</h2>
+        <!--same slider format as resumes-->
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="eoe-slider">Equal Opportunity Employer:</label>
+          <input id="eoe-slider" name="eoe-slider" type="range" min="0" max="2" step="1" value="1" style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="reqexp-slider">Require Experience:</label>
+          <input id="reqexp-slider" name="reqexp-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="reqcomm-slider">Require Communication Skills:</label>
+          <input id="reqcomm-slider" name="reqcomm-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="reqeduc-slider">Require Education:</label>
+          <input id="reqeduc-slider" name="reqeduc-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="reqcomp-slider">Require Computer Skills:</label>
+          <input id="reqcomp-slider" name="reqcomp-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+        <div class="tri-slider" style="margin-bottom:8px;">
+          <label for="reqorg-slider">Require Organizational Skills:</label>
+          <input id="reqorg-slider" name="reqorg-slider" type="range" min="0" max="2" step="1" value="1"
+            style="width:100px;">
+          <div class="tri-labels" style="font-size:11px; display:flex; gap:14px;">
+            <span>No</span><span>No Filter</span><span>Yes</span>
+          </div>
+        </div>
+
+
+
+        <label for="industry-filter">Industry:</label><br>
+        <select id="industry-filter" name="industry-filter" size="1" style="min-width:150px;"></select>
+      </aside>
+
+      <!-- CENTER PANEL: Chart -->
+      <section aria-labelledby="chart-heading">
+
+        <div class="two-slider" style="margin-bottom: 10px;">
+          <label class="compare-label" for="compare_what">Compare groups by:</label>
+
+          <div class="slider-wrapper">
+            <input id="compare_what" name="compare_what" type="range" min="0" max="1" step="1" value="0">
+            <div class="two-labels">
+              <span>Race</span>
+              <span>Race + Sex</span>
+            </div>
+          </div>
+        </div>
+
+        <figure>
+          <svg id="chart" width="600" height="400" role="img" aria-labelledby="chart-title chart-desc">
+
+          </svg>
+
+        </figure>
+
+        <div id="small-sample-msg" role="status" aria-live="polite" style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            color: darkred;
+            background: rgba(255,255,255,0.9);
+            padding: 12px 20px;
+            border-radius: 6px;
+            border: 1px solid #291c1c;
+            display:none;
+            pointer-events:none;
+            text-align:center;
+          ">
+        </div>
+      </section>
+
+      <!-- student worksheet-->
+      <section aria-labelledby="student-activity-heading">
+        <h2 id="student-activity-heading">Student Activity (Download after completion)</h2>
+
+        <form id="student-form" style="
+            width: 420px;
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            background:#fafafa;
+            padding: 16px;
+            border-radius: 8px;
+          ">
+          <div>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" style="width:100%;">
+          </div>
+
+          <br>
+
+          <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" style="width:100%;">
+          </div>
+
+          <br>
+
+          <h3>Learning Outcomes</h3>
+          <ul>
+            <li>Deepen understanding of racial discrimination in labor markets on the hiring side</li>
+            <li>Gain familiarity with interpreting bar plots and identifying patterns</li>
+            <li>Analyze broader social implications by connecting findings to issues of socioeconomic inequality and
+              income disparity.</li>
+          </ul>
+
+          <h3>Mission 1: Equal Opportunity Employer (EOE)</h3>
+          <p>
+            Companies that are labeled "Equal Opportunity Employer" are expected to ensure that hiring decisions aren’t
+            based on traits like race, gender, age, or disability.
+          </p>
+
+          <div>
+            <label for="m1_q1">
+              1) How does the “Equal Opportunity Employer” label factor into callback rates among different groups
+              of resumes? Jot down what the bar plots show as you play around with the tool.
+            </label>
+            <textarea id="m1_q1" name="m1_q1" rows="4" style="width:100%;"></textarea>
+          </div>
+
+          <p>
+            2) Pick 1-2 observations from above that you found interesting. Explain why they stood out to you.
+          </p>
+          <textarea id="m1_q2" name="m1_q2" rows="4" style="width:100%;"></textarea>
+
+          <p>
+            3) Construct a possible explanation for each of the pattern(s) you listed above. Why might that be the case?
+            Try to bring in what you learned about civil rights movements last week.
+          </p>
+          <textarea id="m1_q3" name="m1_q3" rows="4" style="width:100%;"></textarea>
+
+          <p>
+            4) What other data can help support the claims you’ve made above? Why are they helpful?
+          </p>
+          <textarea id="m1_q4" name="m1_q4" rows="4" style="width:100%;"></textarea>
+
+          <h3>Mission 2: Pick your own variable!</h3>
+          <p>
+            Unlike Mission 1, here you will pick one variable other than EOE and explore the questions below.
+          </p>
+
+          <p>
+            1) How does the variable you picked factor into callback rates among different groups of resumes?
+            Jot down what the bar plots show as you play around with the tool.
+          </p>
+          <textarea id="m2_q1" name="m2_q1" rows="4" style="width:100%;"></textarea>
+
+          <p>
+            2) Pick 1-2 observations from above that you found interesting. Explain why they stood out to you.
+          </p>
+          <textarea id="m2_q2" name="m2_q2" rows="4" style="width:100%;"></textarea>
+
+          <p>
+            3) Construct a possible explanation for each of the pattern(s) you listed above. Why might that be the case?
+            Try to bring in what you learned about civil rights movements last week.
+          </p>
+          <textarea id="m2_q3" name="m2_q3" rows="4" style="width:100%;"></textarea>
+
+          <p>
+            4) What other data can help support the claims you’ve made above? Why are they helpful?
+          </p>
+          <textarea id="m2_q4" name="m2_q4" rows="4" style="width:100%;"></textarea>
+
+          <h3>Reflection</h3>
+
+          <p>
+            1) Write a paragraph: How did this activity impact your understanding of racial discrimination,
+            socioeconomic inequality, and income disparity?
+          </p>
+          <textarea id="ref_q1" name="ref_q1" rows="4" style="width:100%;"></textarea>
+
+          <p>
+            2) What are 2 other lingering questions that you’d like to learn more about?
+          </p>
+          <textarea id="ref_q2" name="ref_q2" rows="4" style="width:100%;"></textarea>
+
+          <button id="downloadDOCX" type="button" style="padding:10px 14px; font-size:16px;">
+            Finish – Download Word Doc
+          </button>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="test.js"></script>
+
+
+  <!--need to download the word doc from stud's responses-->
+  <script>
+    document.getElementById("downloadDOCX").addEventListener("click", async function () {
+      const { Document, Packer, Paragraph, HeadingLevel, TextRun } = docx;
+
+      function field(id) {
+        return document.getElementById(id).value.trim();
+      }
+
+      const doc = new Document({
+        sections: [{
+          children: [
+            new Paragraph({ text: "Student Activity Worksheet", heading: HeadingLevel.HEADING_1 }),
+
+            new Paragraph(" "),
+            new Paragraph("Date: " + field("date")),
+            new Paragraph("Name: " + field("name")),
+
+            new Paragraph(" "),
+            new Paragraph({ text: "Learning Outcomes:", heading: HeadingLevel.HEADING_2 }),
+            new Paragraph("• Deepen understanding of racial discrimination in labor markets on the hiring side"),
+            new Paragraph("• Gain familiarity with interpreting bar plots and identifying patterns"),
+            new Paragraph("• Analyze broader social implications by connecting findings to issues of socioeconomic inequality and income disparity."),
+
+            new Paragraph(" "),
+            new Paragraph({ text: "Mission 1: Equal Opportunity Employer (EOE)", heading: HeadingLevel.HEADING_2 }),
+            new Paragraph("1) How does the “Equal Opportunity Employer” label factor into callback rates among different groups of resumes? Jot down what the bar plots show as you play around with the tool."),
+            new Paragraph(field("m1_q1")),
+
+            new Paragraph(" "),
+            new Paragraph("2) Pick 1-2 observations from above that you found interesting. Explain why they stood out to you."),
+            new Paragraph(field("m1_q2")),
+
+            new Paragraph(" "),
+            new Paragraph("3) Construct a possible explanation for each of the pattern(s) you listed above. Why might that be the case? Try to bring in what you learned about civil rights movements last week."),
+            new Paragraph(field("m1_q3")),
+
+            new Paragraph(" "),
+            new Paragraph("4) What other data can help verify the claims you’ve made above? Why are they helpful?"),
+            new Paragraph(field("m1_q4")),
+
+            new Paragraph(" "),
+            new Paragraph({ text: "Mission 2: Pick Your Own Variable", heading: HeadingLevel.HEADING_2 }),
+            new Paragraph("1) How does the variable you picked factor into callback rates among different groups of resumes? Jot down what the bar plots show as you play around with the tool."),
+            new Paragraph(field("m2_q1")),
+
+            new Paragraph(" "),
+            new Paragraph("2) Pick 1-2 observations from above that you found interesting. Explain why they stood out to you."),
+            new Paragraph(field("m2_q2")),
+
+            new Paragraph(" "),
+            new Paragraph("3) Construct a possible explanation for each of the pattern(s) you listed above. Why might that be the case? Try to bring in what you learned about civil rights movements last week."),
+            new Paragraph(field("m2_q3")),
+
+            new Paragraph(" "),
+            new Paragraph("4) What other data can help support the claims you’ve made above? Why are they helpful?"),
+            new Paragraph(field("m2_q4")),
+
+            new Paragraph(" "),
+            new Paragraph({ text: "Reflection", heading: HeadingLevel.HEADING_2 }),
+            new Paragraph("1) Write a paragraph: How did this activity impact your understanding of racial discrimination, socioeconomic inequality, and income disparity?"),
+            new Paragraph(field("ref_q1")),
+
+            new Paragraph(" "),
+            new Paragraph("2) What are 2 other lingering questions that you’d like to learn more about?"),
+            new Paragraph(field("ref_q2")),
+          ]
+        }]
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "Student_Responses.docx";
+      a.click();
+    });
+  </script>
+
+</body>
+
+</html>

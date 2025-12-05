@@ -1,0 +1,44 @@
+/*slider formatting*/
+.tri-slider {
+  margin-bottom: 0px;
+}
+
+.tri-slider label {
+  display: block;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.tri-slider input[type="range"] {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.tri-labels {
+  display: flex;
+  font-size: 1px;
+  margin-top: 4px;
+}
+
+
+.two-slider {
+  display: flex;
+  align-items: center;
+  gap: 8px;   }              
+
+
+.slider-wrapper {
+  display: flex;
+  flex-direction: column;}
+
+.slider-wrapper input[type="range"] {
+  width: 130px;
+}
+
+.two-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  width: 130px;             
+}
